@@ -4,5 +4,45 @@
             "question": "question-title", 
             "reason": ""
         }
+    ],
+    "migration": [
+        {
+            "question": "Brownfield TypeSpec migration",
+            "reason": "The question is representative, and the answer is relatively accurate and clear."
+        }
+    ],
+    "pipeline-failure": [
+        {
+            "question": "Missing APIs in default tag error for typespec conversion PR",
+            "reason": "This case is more representative."
+        }
+    ],
+    "tspconfig": [
+        {
+            "question": "is sdk generation required for private preview?",
+            "reason": "Frequently Asked Questions."
+        }
+    ],
+    "tsv-check": [
+        {
+            "question": "Typespec Validation Failing on PR due to `typespec-go` configuration missing",
+            "reason": "Frequently Asked Questions."
+        }
+    ],
+    "typespec-client": [
+        {
+            "question": "How to make an interface internal ?",
+            "reason": "representative."
+        }
+    ],
+    "versioning": [
+        {
+            "question": "How to restrict importing typespec files in main based off of versions.",
+            "reason": "The question and answer are concise and clear."
+        },
+        {
+            "question": "Description changes across versions?",
+            "reason": "The question and answer are concise and clear."
+        }
     ]
 }

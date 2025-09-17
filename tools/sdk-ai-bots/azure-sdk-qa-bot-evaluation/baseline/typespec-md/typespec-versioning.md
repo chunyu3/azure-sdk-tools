@@ -866,7 +866,6 @@ if you are in preview version I think also the policy is to only have a single p
 Hi team, when adding a new api version in the TypeSpec, is there any way I can generate thoes example Json files from preview version and with the "api-version" property changed? Or I will need to manually cope the example Json files from preview version and update the "api-version" property inside all of them?
 
 ## answer
-Example generation for specs works the same way as it did before.
 You will need to place version specific examples under `examples\[version]`. So if you are adding a new version, you can copy over the example files and make appropriate add/remove/update to them including the `api-version`
 Note that you can also use swagger-based example generation, for the new version (which is less attractive if you have customized the examples)
 
@@ -880,4 +879,4 @@ My team wanted to add more details to a model description. This change results i
 I wanted to know what the best course of action was for passing this check. Since we don't expect updates to our older specs, is it ok to just change the output path in our tspconfig.yaml to only point at the current version of the output spec? Or is there a better way to handle this?
 
 ## answer
-Honestly, the best thing is to update your docs and take the update in previous versions (which are likely now more accurately described as well). Documentation-only updates should not be flagged as breaking changes at all. If they are for some reason, I'll just approve it.
+Honestly, the best thing is to update your docs and take the update in previous versions (which are likely now more accurately described as well). Documentation updates are not breaking changes, and, if changes are limited to documentation, this should be passed easily by the breaking change board.

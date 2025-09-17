@@ -8,7 +8,7 @@ Additionally, I will be releasing underneath the AKS product, but my service has
 ## answer
 You can update the link in your existing release plan, but it will override subsequent steps if you’ve progressed beyond that step already
 
-# Release planner "Service Contacts"
+# Release planner 'Service Contacts'
 
 ## question 
 I created a [release plan](https://aka.ms/sdk-release-planner?release-plan-id=87e2b5c5-7d15-f011-9989-000d3a34671f) for our Managment API & SDK, however it auto-populated the Service Contacts "Product*" fields with my contact information instead of information from service tree.  
@@ -70,8 +70,6 @@ Once you have updated the product, then you will be able to create the release p
 I have a release plan [Azure SDK Release Planner - Power Apps](https://apps.powerapps.com/play/e/ed2ffefd-774d-40dd-ab23-7fff01aeec9f/a/821ab569-ae60-420d-8264-d7b5d5ef734c?release-plan-id=b1e8b8ef-7eb4-ee11-a569-000d3a3411c3&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47) and I am trying to go through the prerequisite checks for SDK release, however the 'API spec' under 'API specs' is incorrect (private repo when it should be public repo). How do I update that value? Or do I need to create a new release plan?
 
 ## answer
-looking
-
 You need to update your release plan to use the public repo PR. To do so, go to the `Management plane API readiness` -> `Associate a pull request`
 
 # Release planner - SDK Release summary shows as pending with all Prs completed

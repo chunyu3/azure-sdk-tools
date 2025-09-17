@@ -685,7 +685,8 @@ For additional information on TypeSpec validation, please refer to https://aka.m
 ```
 
 ## answer
-Suppressing go specific rules worked for me (locally, checking CI now). Thanks Mike. Also FYI Darren Cohen. Here's our suppression file:
+https://github.com/Azure/azure-rest-api-specs/wiki/TypeSpec-Validation#suppressing-sdktspconfigvalidation-rules
+Suppressing go specific rules worked for me. Here's our suppression file:
 
 ```yml
 - tool: TypeSpecValidation
@@ -701,7 +702,6 @@ Suppressing go specific rules worked for me (locally, checking CI now). Thanks M
     - options.@azure-tools/typespec-go.package-dir
   reason: 'Azure Load Testing does not support a Go SDK currently'
 ```
-Let me know if I can help with anything!
 
 # SdkTspConfigValidation failures for JS dataplane code generation
 
