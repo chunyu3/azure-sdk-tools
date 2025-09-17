@@ -51,10 +51,10 @@ Problem 4 : oav generate examples for minimum set  is adding an item with locati
 ```
 
 ## answer
-For Problem 1,  The 'title' field in the example file determines the name of the example in the 'x-ms-examples' extension, file names have nothing to do with it.  TypeSpec and tsv have no preference for the names of example files, as long as they are in the configured example directory.  It is possible, however, for an example to be dropped if it shares the same 'title'  and 'operation Id'  with another example file.
-For Problem 2, oav generate-examples is a best-effort tool to help you get started generating examples from Swagger.  You may need to further edit the examples after generation.
-For Problem 3, The source of truth for your examples, is the "examples" folder alongside your TSP sources.  tsp compile copies these examples alongside your generated swagger.
-For Problem 4,  'location' is required in any tracked resource, so a set of values with one resource would have this property.
+For Problem 1, The 'title' field in the example file determines the name of the example in the 'x-ms-examples' extension, not the file name. TypeSpec and tsv have no preference for example file names, as long as they are in the configured example directory. However, an example may be dropped if it shares the same 'title' and 'operation Id' with another example file.
+For Problem 2, oav generate-examples is a best-effort tool to help you get started generating examples from Swagger. You may need to further edit the examples after generation. Refer to the documentation at https://github.com/Azure/oav/blob/develop/documentation/example-generation.md for more details.
+For Problem 3, The source of truth for your examples is the "examples" folder alongside your TSP sources. When you run tsp compile, it copies these examples alongside your generated swagger. Maintaining both copies is by design.
+For Problem 4, 'location' is required in any tracked resource, so a set of values with one resource would have this property.
 
 # How to create an Example for a typespec model?
 
@@ -62,13 +62,24 @@ For Problem 4,  'location' is required in any tracked resource, so a set of valu
 I was going through my Typespec file and adding @example() decorators on top of models but then I was informed by Azure SDK Q&A Bot that Azure API Spec doesn't support the @example() decorator? Instead I'm supposed to create .json files in the examples folder and link it by operaiton id. However, models don't have operation ids? or do they? 
 
 ## answer
-Here is some documentation on generating required examples: [x-ms-examples example files | TypeSpec Azure](https://azure.github.io/typespec-azure/docs/migrate-swagger/faq/x-ms-examples/).  
-Note that the examples that are required for specs at this point are operation examples (which include examples of model serialization in the operations that include those models).  The workflow is:
-Design your API in TypeSpec
-Generate an OpenApi doc by compiling your spec
-Run oav to generate examples for each of the operations (oav generates syntactically valid examples with the 'operationId'  and 'title' fields filled in)
-Go through the examples, replace values to make the examples more useful as documentation, and feel free to add  any examples for important scenarios that might be difficult to understand otherwise, or remove redundant examples (although you will need at least one per operation)
-Copy the examples into the `examples/<api-version>/` folder inside your typespec directory and the OpenApi emitter will automatically associate the examples with  the appropriate operatiosn through the 'operationId' in the example file,  using the 'title' field as the title of the example.
+Azure TypeSpec projects don't support the @example() decorator on models. For Azure-compliant TypeSpec, examples are provided as standalone JSON files in the examples/ directory.
+
+Models don't have operationIds - only operations (REST API endpoints) have operationIds. Examples are associated with operations through these operationIds, not with individual models. When you want to demonstrate example payloads for models, you do so by providing operation-level examples (for create, update, etc.) that include the model data.
+
+Here's the recommended workflow:
+
+1. Design your API in TypeSpec
+2. Generate an OpenAPI doc by compiling your spec
+3. Run `oav generate-examples` to generate examples for each operation (this creates syntactically valid examples with the 'operationId' and 'title' fields filled in)
+4. Edit the examples to make them more useful as documentation:
+   - Replace generic values with meaningful ones
+   - Add examples for important scenarios that might be difficult to understand
+   - Remove redundant examples (though you need at least one per operation)
+5. Place the examples in the `examples/<api-version>/` folder inside your TypeSpec directory
+
+The TypeSpec emitter automatically associates examples with operations through the 'operationId' field in the example file, using the 'title' field as the title of the example. When you compile your TypeSpec, these examples are also copied to the Swagger output directory (this is why you'll see duplicate files).
+
+For more information, see the [x-ms-examples documentation for TypeSpec Azure](https://azure.github.io/typespec-azure/docs/migrate-swagger/faq/x-ms-examples/).
 
 # Oav generate-examples failed
 

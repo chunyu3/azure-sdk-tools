@@ -4,9 +4,15 @@
 We have the [PR](https://github.com/Azure/azure-rest-api-specs-pr/pull/22834) to introduce new API version with new features for existing RP. The [Breaking Changes(Cross-Version) detected problems](https://github.com/Azure/azure-rest-api-specs-pr/pull/22834/checks?check_run_id=43004413278). How to fix it?
 
 ## answer
-It depends.  Even across versions, some changes are discouraged/disallowed.  If the breaking changes reported in your PR are all intentional, then you just need to follow the instructions in the "next steps to merge" comment to work with the breaking changes board for approval: https://aka.ms/brch
-Generally, breaking changes between preview api-versions are allowed if there are good reasons,  breaking changes relative to a stable api-version are more of a concern.  Also, if preview api-versions are old enough, they count as stable api-versions (I doubt that is the case here).
+It depends. Even across versions, some changes are discouraged/disallowed. If the breaking changes reported in your PR are all intentional, then you just need to follow the instructions in the "next steps to merge" comment to work with the breaking changes board for approval: https://aka.ms/brch
+
+Generally, breaking changes between preview api-versions are allowed if there are good reasons, breaking changes relative to a stable api-version are more of a concern. Also, if preview api-versions are old enough, they count as stable api-versions (I doubt that is the case here).
+
 The case here is a preview with breaking changes relative to the last stable. And in this case, making a property optional would be considered breaking if the property occurs in responses.
+
+For scenarios where only one of multiple properties should be present (like awsCloudProfile or gcpCloudProfile) but not both, making both optional in the swagger would still be considered a breaking change and needs to go through the breaking changes board for approval.
+
+AddedRequiredProperty is also considered a breaking change and would need to go through the breaking changes board for approval as well.
 
 # Unresolved Breaking changes
 
@@ -27,23 +33,32 @@ You could use `extends` to represent `allof`
 Hi TypeSpec Discussion, do we need review from type spec team before we could merge data plane API spec PR on github specs repo?
 
 ## answer
-All data plane API specs must be reviewed by the API Stewardship board.  Please create a release plan and then you can schedule a review.  [What is a release plan](https://eng.ms/docs/products/azure-developer-experience/plan/release-plan)?
-```
-What is a release plan?
-A release plan is a guided workflow that you can create to track an upcoming REST API and SDK release.
+Yes, all data plane API specs must be reviewed by the API Stewardship board before merging. Here's what you need to do:
 
-How it works
-Let's say your product team is working towards a new feature or REST API version. With Release Planner, you can build a guided workflow for the REST API and SDK tasks that your team must complete to obtain Cloud Product Excellence (CPEX) sign-off.
+1. Create a release plan in Azure SDK Release Planner:
+   - Log in to [Azure SDK Release Planner](https://aka.ms/azsdk/releaseplan)
+   - Choose your top-level service
+   - Click "Create a release plan" and complete the form (you'll need to onboard to the Azure SDK team first if you haven't already)
+   - Click "Create" to confirm
 
-For example, consider the following scenario:
+2. Work through the API Readiness milestone:
+   - In your release plan, go to the "Milestones" tab
+   - Start with the "API Readiness" milestone
+   - Follow the tasks to link your PR and schedule a review with the API Stewardship board
+   - The board will review your TypeSpec definitions and provide feedback
 
-As an Azure service engineer, you want to know what tasks are required to release a new REST API version to customers. You log in to Release Planner and create new plan.
-Release Planner connects to Service Tree to get details about your service, and creates a workflow that's specific to your scenario.
-You link the pull request that contains your latest REST API spec updates. Release Planner lets you know when it's time to schedule a review, fix validation issues, request sign-offs, and more.
-You then get information on how to generate, test, release, and get approval of your SDKs.
-Milestones and tasks
-A release plan consists of milestones. A milestone is a bucket of related tasks to complete. Depending on your product's specific scenario, the milestones and tasks will vary. The major two milestones are API Readiness and SDK release
-```
+3. Address any feedback from the review:
+   - Make necessary changes to your TypeSpec files based on the feedback
+   - Update your PR with the changes
+   - Get final approval from the API Stewardship board
+
+4. Complete remaining milestones:
+   - After API approval, continue with the SDK release milestone
+   - Follow all required tasks to ensure your specs meet the necessary quality standards
+
+This process ensures your data plane API specs meet Azure standards before merging. The release plan will guide you through all the steps needed for review and approval.
+
+For more details about release plans, see the [official documentation](https://eng.ms/docs/products/azure-developer-experience/plan/release-plan).
 
 # Is adding new value to enum is considered a breaking change?
 
@@ -75,11 +90,15 @@ model SolutionProperties {
 In future, if we add new value to this existing enums in same api-version after GA, then will it be considered as breaking change or not? Will it cause any failure anywhere in swagger, SDK, etc?
 
 ## answer
-extensible union as defined in your example wouldn't count as a breaking change to add a new entry as it defines this as already allowing any string
-For clarity,  an 'extensible enum'  is represented in TypeSpec as an open union.  That is a union of string values that include string as a variant (`union Foo { Bar: "bar", Baz: "baz", string}`).  In this case, adding new values is not a breaking change, but removing values is
- 
+The extensible union as defined in your example wouldn't count as a breaking change to add a new entry, as it already allows any string. However, removing existing values would be a breaking change.
+
+For clarity, an 'extensible enum' is represented in TypeSpec as an open union. That is a union of string values that include string as a variant (`union Foo { Bar: "bar", Baz: "baz", string}`). In this case, adding new values is not a breaking change, but removing values is.
+
 An enum or closed union (union with just literal string variants, `union Foo {Bar: "bar", Baz: "baz"}`) is considered a closed enum, which means that adding or removing values is a breaking change.
- 
-The reason for the difference is that some SDKs have enumeration types that are used when an enum is comprehensive (closed),  but not used if the enum is partial.  When the enumeration types are used, customer code can break if it processes each of the variants explicitly.
- 
-This is why we highly recommend use open enumerations in most cases, and to use a closed enum you have to suppress a linting rule.
+
+The reason for the difference is that some SDKs have enumeration types that are used when an enum is comprehensive (closed), but not used if the enum is partial. When the enumeration types are used, customer code can break if it processes each of the variants explicitly.
+
+Best practices:
+- Never remove existing values from enums (even extensible enums) in the same API version after GA.
+- If you must remove a value, introduce a new API version to avoid breaking existing clients.
+We highly recommend using open enumerations in most cases; to use a closed enum you have to suppress a linting rule.

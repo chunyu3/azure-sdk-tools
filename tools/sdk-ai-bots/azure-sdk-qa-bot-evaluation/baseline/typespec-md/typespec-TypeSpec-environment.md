@@ -8,24 +8,35 @@ error file-load: Package subpath './typekit' is not defined by "exports" in C:\V
 error import-not-found: Couldn't resolve import "@azure-tools/typespec-autorest"
 
 ## answer
-This seems like you have an issue with the dependencies you have installed. Did you get any error when using npm install? What versions are you using? Try a fresh install (delete node_modules first).
+The errors you're seeing are caused by incompatible TypeSpec package versions in your environment. These specific errors occur when package versions don't align correctly across your dependencies.
 
-These are not compatible. Please upgrade to the latest or make sure you are using versions that match if you can't for now.
+To fix this issue when working in the Azure REST API specs repository:
 
-For the latest, you can look on npm: https://www.npmjs.com/package/@typespec/compiler
-Or at the bottom of the repo: https://github.com/microsoft/typespec
+1. **Clean your environment**:
+   - Delete your `node_modules` folder
+   - Clear npm cache if needed
 
-There are 3 version groups you need to know since we are at 1.0:
+2. **Install the correct dependencies**:
+   - Navigate to the repository root
+   - Run `npm ci` (not npm install) to ensure exact versions from package-lock.json
+   - Verify installation: `npx tsp --version`
 
-Stable packages: 1.x (compiler, http, openapi, openapi3)
+3. **Version compatibility**:
+   Since TypeSpec is now at 1.0, you need to maintain version alignment within these groups:
+   - **Stable packages (1.x)**: compiler, http, openapi, openapi3
+   - **Core preview packages (0.y)**: rest, versioning, stream, see
+   - **Azure packages (0.z)**: all Azure packages
 
-Core preview packages: 0.y (rest, versioning, stream, see)
+   All packages within the same group must have matching major.minor versions.
 
-Azure packages: 0.z (all Azure packages)
-All packages in the same group have the same major.minor version.
+4. **For Azure REST API specs repositories**:
+   - Always use the dependencies defined in the repository's package.json
+   - Don't mix global and local TypeSpec installations when working on specs
+   - If issues persist, try: `npx tsp init https://aka.ms/typespec/azure-init` to set up a fresh project
 
-If you are in the spec repo, read this doc for next steps:
-https://github.com/Azure/azure-rest-api-specs/blob/main/documentation/typespec-rest-api-dev-process.md
+For latest references:
+- Official guide: [TypeSpec REST API Dev Process](https://github.com/Azure/azure-rest-api-specs/blob/main/documentation/typespec-rest-api-dev-process.md)
+- TypeSpec versions: [npm/@typespec/compiler](https://www.npmjs.com/package/@typespec/compiler)
 
 # TSP Install fails with below error
 
@@ -49,8 +60,34 @@ Error: spawn EINVAL
 }
 
 ## answer
-1. which version of the compiler did you install globally, this looks liek quite an old one?
-2. where are you trying to use typespec, if its the azure spec repo please follow the docs there https://github.com/Azure/azure-rest-api-specs/blob/7fc6689d84858b1c71b786526b04c014c4589968/documentation/typespec-rest-api-dev-process.md
+The error you're encountering (`spawn EINVAL`) typically occurs when there's an issue with Node.js processes being unable to spawn child processes correctly. Here's how to address this issue:
+
+1. **Check your Node.js version**: 
+   - Make sure you're using Node.js LTS version 18 or above as recommended by the TypeSpec documentation
+   - You can verify your version with `node --version`
+
+2. **Proper installation process for TypeSpec**:
+   - If you're working with Azure REST API specs repositories, don't rely solely on global installation
+   - Navigate to the repository root folder and run `npm ci` to install all required packages based on the package-lock.json
+   - Verify installation with `npx tsp --version`
+
+3. **Use the TypeSpec Azure template for new projects**:
+   - When creating a new TypeSpec project, use: `npx tsp init https://aka.ms/typespec/azure-init`
+   - This ensures you have the correct project structure and dependencies
+
+4. **Visual Studio Code integration**:
+   - Install TypeSpec VS Code extension for better development experience: `npx tsp code install`
+
+5. **Consider using containerized options**:
+   - VSCode with local Docker .devcontainer
+   - GitHub Codespaces for browser-based development
+
+If you continue experiencing issues, you might need to:
+- Check for any proxy or networking issues that could interfere with npm processes
+- Verify you have proper permissions to execute processes on your system
+- Try clearing npm cache with `npm cache clean --force`
+
+For complete TypeSpec setup and usage documentation, please refer to the official guide: [TypeSpec REST API Dev Process](https://github.com/Azure/azure-rest-api-specs/blob/7fc6689d84858b1c71b786526b04c014c4589968/documentation/typespec-rest-api-dev-process.md)
 
 # How to properly update the TypeSpec environment?
 
