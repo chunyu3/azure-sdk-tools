@@ -7,5 +7,25 @@
     ],
     "api-versions":[
         
+    ],
+    "release-planner":[
+        {
+            "question": "Management plane release plan needing updates",
+            "reason": "The question and answer are clear and concise."
+        },
+        {
+            "question": "Release planner 'Service Contacts'",
+            "reason": "The question and answer are clear and concise."
+        }
+    ],
+    "release-sdk":[
+        {
+            "question": "Can we release SDK in a private preview ?",
+            "reason": "The answer is clear."
+        },
+        {
+            "question": "Is a release plan required for a new SDK release if the service is already in GA?",
+            "reason": "This post is more representative."
+        }
     ]
 }

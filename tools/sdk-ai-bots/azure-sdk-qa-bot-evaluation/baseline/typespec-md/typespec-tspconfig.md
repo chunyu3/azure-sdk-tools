@@ -8,11 +8,20 @@ I'm a bit confused. Does api approval always include SDK? If not, how do we setu
 we are creating an arm api / not dataplane. I've seen some tspconfig.yaml without sdk configs, but when i try removing them I encounter tsv failures.
 
 ## answer
-An SDK is NOT required for Private Preview
-You just need to have your API Spec signed off
-Have you created a release plan? If not, that is mandatory for sign off and will walk you thru step by step [aka.ms/azsdk/onboard](https://aka.ms/azsdk/onboard) and [aka.ms/azsdkdocs/release-plans](https://aka.ms/azsdkdocs/release-plans)
 As of today how the system is designed, you need to suppress those warning if you do not want to include SDK at this time. See an example:
-https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/Azure.Monitor.Ingestion/suppressions.yaml
+https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/Monitor.Ingestion/suppressions.yaml:
+```
+- tool: TypeSpecValidation
+  paths:
+    - tspconfig.yaml
+  rules:
+    - SdkTspConfigValidation
+  sub-rules:
+    # Suppress JS package & dir names related to RLC, which require "rest" in the name. We do not use RLC.
+    - options.@azure-tools/typespec-ts.package-dir
+    - options.@azure-tools/typespec-ts.package-details.name
+  reason: 'See above comments for details'
+```
 When you will need SDK, you will be required to remove the file and follow the config validation process.
 
 # What is `x-ms-long-running-operation-options` for LRO operation of data-plane when `emit-lro-options: none` in `@azure-tools/typespec-autorest`?

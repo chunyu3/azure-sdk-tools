@@ -24,7 +24,7 @@ Error: Process completed with exit code 1.
 However, I have the Approved-Avocado label on my PR so I'm unsure as to why this is still running?
 
 ## answer
-Your PR is merged, so I can't see the status checks anymore.  My guess is you confused the intermediate check "Swagger Avocado - Analyze Code" with the final required check "Swagger Avocado".
+My guess is you confused the intermediate check "Swagger Avocado - Analyze Code" with the final required check "Swagger Avocado".
 
 # SDK Generation failure
 

@@ -34,8 +34,6 @@ Servicesmust conform to a single, unified api-version for their service, service
 In generally, the more compliant your service is to the RPC and best practices, the easier conversion will be
 There is documentation on converting here: [Getting started | TypeSpec Azure](https://azure.github.io/typespec-azure/docs/migrate-swagger/01-get-started/)
 
-We highly encourage you do the migration. Any problem related to https://azure.github.io/typespec-azure/docs/migrate-swagger/01-get-started/, don't hesitate to reach out to me.
-
 # Typespec -> Autorest generation : multiple specs per service
 
 ## question 
