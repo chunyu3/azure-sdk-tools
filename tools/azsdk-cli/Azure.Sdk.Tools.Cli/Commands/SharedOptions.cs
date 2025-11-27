@@ -9,6 +9,7 @@ using Azure.Sdk.Tools.Cli.Tools.Example;
 using Azure.Sdk.Tools.Cli.Tools.TypeSpec;
 using Azure.Sdk.Tools.Cli.Tools.Verify;
 using Azure.Sdk.Tools.Cli.Tools.Package.Samples;
+using Azure.Sdk.Tools.Cli.Tools.TypeSpec.authoring;
 
 namespace Azure.Sdk.Tools.Cli.Commands
 {
@@ -44,6 +45,8 @@ namespace Azure.Sdk.Tools.Cli.Commands
             typeof(CustomizedCodeUpdateTool),
             typeof(TypeSpecPublicRepoValidationTool),
             typeof(AiCompletionTool),
+            typeof(TypeSpecAuthoringTool),
+            typeof(ApiVersionTool),
 
             typeof(VerifySetupTool),
             typeof(TestTool),

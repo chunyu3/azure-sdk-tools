@@ -15,6 +15,7 @@ using Azure.Sdk.Tools.Cli.Telemetry;
 using Azure.Sdk.Tools.Cli.Tools;
 using Azure.Sdk.Tools.Cli.Samples;
 using Azure.Sdk.Tools.Cli.Services.Languages;
+using Azure.Sdk.Tools.Cli.Tools.TypeSpec;
 
 
 namespace Azure.Sdk.Tools.Cli.Services
@@ -34,6 +35,7 @@ namespace Azure.Sdk.Tools.Cli.Services
             services.AddSingleton<IDevOpsService, DevOpsService>();
             services.AddSingleton<IGitHubService, GitHubService>();
             services.AddSingleton<IAiCompletionService, AiCompletionService>();
+            services.AddSingleton<AiCompletionTool>();
 
             services.AddScoped<LanguageService, DotnetLanguageService>();
             services.AddScoped<LanguageService, JavaLanguageService>();

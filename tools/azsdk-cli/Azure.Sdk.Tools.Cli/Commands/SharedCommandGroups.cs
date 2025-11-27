@@ -68,6 +68,11 @@ namespace Azure.Sdk.Tools.Cli.Commands
             Description: "TypeSpec client update helpers"
         );
 
+        public static readonly CommandGroup TypeSpecAuthoring = new(
+            Verb: "authoring",
+            Description: "Package operations"
+        );
+
         public static readonly CommandGroup Verify = new(
             Verb: "verify",
             Description: "Tools for verifying project environments.",
