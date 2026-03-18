@@ -28,6 +28,13 @@ namespace Azure.Sdk.Tools.Cli.Models.AzureSdkKnowledgeAICompletion
         public List<AdditionalInfo> AdditionalInfos { get; set; } = new();
 
         /// <summary>
+        /// The analyzed intention of the query including question category, scope, and service type.
+        /// If null, the service will analyze the intention automatically.
+        /// </summary>
+        [JsonPropertyName("intention")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public QueryIntention? QueryIntention { get; set; }
+        /// <summary>
         /// Indicates whether to enable agentic search for this request. If null, the service default is used.
         /// </summary>
         [JsonPropertyName("with_agentic_search")]

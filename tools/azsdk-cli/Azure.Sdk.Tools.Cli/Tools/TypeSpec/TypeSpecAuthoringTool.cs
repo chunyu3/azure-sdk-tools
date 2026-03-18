@@ -128,6 +128,11 @@ Returns an answer with supporting references and documentation links
             string additionalInformation = null,
             [Description("The root path of the TypeSpec project")]
             string typeSpecProjectRootPath = null,
+            [Description("The scope of the question")]
+            string questionScope = "branded",
+            [Description("The service type related to the question, e.g. Compute, Storage, etc.")]
+            string serviceType = "ManagementPlane",
+            [Description("Cancellation token")]
             CancellationToken ct = default)
         {
             var typespecProject = _typeSpecHelper.GetTypeSpecProjectRelativePath(typeSpecProjectRootPath);
@@ -145,6 +150,19 @@ Returns an answer with supporting references and documentation links
 
                 _logger.LogInformation("Authoring with request: {Request}", request);
 
+                // Parse enum values
+                if (!Enum.TryParse<QuestionScope>(questionScope, ignoreCase: true, out var scopeEnum))            
+                {
+                    _logger.LogWarning("Invalid question scope '{QuestionScope}', defaulting to Branded", questionScope);
+                    scopeEnum = QuestionScope.Branded;
+                }
+
+                if (!Enum.TryParse<ServiceType>(serviceType, ignoreCase: true, out var serviceTypeEnum))
+                {
+                    _logger.LogWarning("Invalid service type '{ServiceType}', defaulting to ManagementPlane", serviceType);
+                    serviceTypeEnum = ServiceType.ManagementPlane;
+                }
+
                 // Build request
                 var completionRequest = new CompletionRequest
                 {
@@ -155,6 +173,12 @@ Returns an answer with supporting references and documentation links
                         Content = request,
                     },
                     WithAgenticSearch = false, // For authoring, disable agentic search
+                    QueryIntention = new QueryIntention
+                    {
+                        Question = request,
+                        ServiceType = serviceTypeEnum,
+                        QuestionScope = scopeEnum,
+                    }
                 };
 
                 if (!string.IsNullOrWhiteSpace(additionalInformation))

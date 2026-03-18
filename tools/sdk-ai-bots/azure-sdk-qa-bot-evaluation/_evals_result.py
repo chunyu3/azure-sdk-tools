@@ -311,7 +311,8 @@ class EvalsResult:
                 ret = VerificationResult.FAIL # failed
             elif scenario_ret & EvalReturnCode.WARNING:
                 warning_scenarios.append(name)
-                ret = VerificationResult.PASS_WITH_WARNING # succeed with warning
+                if (ret == VerificationResult.PASS) :
+                    ret = VerificationResult.PASS_WITH_WARNING # succeed with warning
 
         if failed_scenarios:
             logging.info(f"Failed Scenarios: {' '.join(failed_scenarios)}")
